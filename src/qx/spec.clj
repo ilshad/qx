@@ -1,5 +1,5 @@
 (ns qx.spec
-  (:require [clojure.spec :as s]))
+  (:require [clojure.spec.alpha :as s]))
 
 (s/def :qx/start (s/coll-of #{:poll :queue} :kind set?))
 (s/def :qx/daily-polling-interval integer?)
@@ -20,9 +20,13 @@
 
 (s/def :qx/db-uri string?)
 
-(s/def :qx/service
-  (s/keys :opt [:qx/start
-                :qx/db-uri
-                :qx/daily-polling-interval
-                :qx/pools
+(s/def :qx/config
+  (s/keys :req [:qx.db/uri
+                :qx/start
+                :qx/daily-polling-interval]
+          :opt [:qx/pools
                 :qx/topics]))
+
+(s/def :qx/service
+  (s/and :qx/config
+         (s/spec (s/keys :req [:qx.db/conn]))))

@@ -13,11 +13,11 @@
         acc))))
 
 (defn start [service running?]
-  (let [queue (d/tx-report-queue (:db/conn service))]
+  (let [queue (d/tx-report-queue (:qx.db/conn service))]
     (while (running?)
       (when-let [{data :tx-data db :db-after} (.take queue)]
         (doseq [e (reduce (collect-tasks db :task.status/queue) #{} data)]
           (consume-queued-task service e))))))
 
 (defn stop [service]
-  (d/remove-tx-report-queue (:db/conn service)))
+  (d/remove-tx-report-queue (:qx.db/conn service)))

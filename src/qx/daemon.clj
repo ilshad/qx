@@ -10,16 +10,16 @@
     (try
       (start service (partial running? id))
       (catch InterruptedException e
-        (log/debug :interrupted id)))))
+        (log/debug ::interrupted id)))))
 
 (defn run [service id start & [stop]]
   (swap! running conj id)
   (let [thread (Thread. (runnable service id start) (str id))]
     (.setDaemon thread true)
     (.start thread)
-    (log/info :started id)
+    (log/info ::started id)
     (assoc-in service [::stop id]
       (fn []
         (.interrupt thread)
         (when stop (stop service))
-        (log/info :stopped id)))))
+        (log/info ::stopped id)))))

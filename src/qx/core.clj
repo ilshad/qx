@@ -25,14 +25,14 @@
   (d/transact (::db/conn @service) [(assoc task :task/id (d/squuid))]))
 
 (defn put-defer [topic ^LocalDate date payload & args]
-  (put (merge {:qx.task/topic topic
-               :qx.task/status :qx.task.status/defer
-               :qx.task.defer/date (.toEpochDay date)
-               :qx.task/payload payload}
+  (put (merge {:task/topic topic
+               :task/status :task.status/defer
+               :task.defer/date (.toEpochDay date)
+               :task/payload payload}
               args)))
 
 (defn put-queue [topic payload & args]
-  (put (merge {:qx.task/topic topic
-               :qx.task/status :qx.task.status/queue
-               :qx.task/payload payload}
+  (put (merge {:task/topic topic
+               :task/status :task.status/queue
+               :task/payload payload}
               args)))

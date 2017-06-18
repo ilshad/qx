@@ -3,7 +3,7 @@
             [qx.schema :as schema]))
 
 (defn start [service]
-  (let [uri (:qx/db-uri service)
+  (let [uri (:qx.db/uri service)
         _ (d/create-database uri)
         conn (d/connect uri)]
     (d/transact conn schema/schema)
