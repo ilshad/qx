@@ -4,7 +4,7 @@
   (:import [java.time LocalDate]))
 
 (defn update-status [service task status]
-  (d/transact (:db/conn service) [(assoc task :task/status status)]))
+  (d/transact (:qx.db/conn service) [(assoc task :task/status status)]))
 
 (defmulti handle-defer
   (fn [service task] (:task/topic task)))
@@ -22,8 +22,8 @@
       db (.toEpochDay date))))
 
 (defn run-defer-by-date [service ^LocalDate date]
-  (doseq [task (query-defer-by-date date (d/db (:db/conn service)))]
-    (handle-defer (into {} task))))
+  (doseq [task (query-defer-by-date date (d/db (:qx.db/conn service)))]
+    (handle-defer service (into {} task))))
 
 (defn start [service running?]
   (while (running?)

@@ -1,7 +1,7 @@
 (ns qx.sample)
 
 (def config
-  {:qx/start #{:poll :queue}
+  {:qx/start #{:qx/poll :qx/queue}
    :qx.db/uri "datomic:mem://qx"
    :qx/daily-polling-interval 60000
    :qx/pools {:pool-1 {:qx.pool/size 10}}

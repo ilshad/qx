@@ -3,12 +3,14 @@
 
 (def running (atom #{}))
 
-(def running? (partial contains? @running))
+(defn running? [id]
+  (fn []
+    (contains? @running id)))
 
 (defn- runnable [service id start]
   (fn []
     (try
-      (start service (partial running? id))
+      (start service (running? id))
       (catch InterruptedException e
         (log/debug ::interrupted id)))))
 

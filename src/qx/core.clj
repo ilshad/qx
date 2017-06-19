@@ -13,8 +13,8 @@
 (defn start [config]
   (swap! service merge config)
   (swap! service db/start)
-  (swap! service daemon/run :poll poll/start)
-  (swap! service daemon/run :queue queue/start queue/stop)
+  (swap! service daemon/run :qx/poll poll/start)
+  (swap! service daemon/run :qx/queue queue/start queue/stop)
   (log/info :started @service))
 
 (defn stop []
