@@ -1,9 +1,11 @@
 (ns qx.queue
   (:require [datomic.api :as d]
-            [io.pedestal.log :as log]))
+            [io.pedestal.log :as log]
+            [qx.executor :as executor]))
 
-(defn consume-queued-task [_ task]
-  (log/info ::consume-queued-task$task task))
+(defn consume-queued-task [service task]
+  (let [execute (executor/task-executor service task)]
+    (execute task)))
 
 (defn collect-tasks [db status]
   (fn [acc [eid _ _ _ _]]
