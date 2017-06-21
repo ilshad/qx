@@ -1,6 +1,7 @@
 (ns qx.core
   (:require [datomic.api :as d]
             [io.pedestal.log :as log]
+            [qx.executor :as executor]
             [qx.daemon :as daemon]
             [qx.queue :as queue]
             [qx.poll :as poll]
@@ -13,6 +14,7 @@
 (defn start [config]
   (swap! service merge config)
   (swap! service db/start)
+  (swap! service executor/create-executors)
   (swap! service daemon/run :qx/poll poll/start)
   (swap! service daemon/run :qx/queue queue/start queue/stop)
   (log/info :started @service))
