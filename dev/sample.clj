@@ -1,4 +1,4 @@
-(ns qx.sample)
+(ns sample)
 
 (def config
   {:qx.db/uri "datomic:mem://qx"

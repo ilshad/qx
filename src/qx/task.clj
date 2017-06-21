@@ -2,7 +2,7 @@
   (:require [datomic.api :as d]
             [io.pedestal.log :as log]))
 
-(defn- update-status [service task status]
+(defn update-status [service task status]
   (d/transact (:qx.db/conn service) [(assoc task :task/status status)]))
 
 (defmulti handle-defer (fn [service task] (:task/topic task)))

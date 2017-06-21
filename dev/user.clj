@@ -1,9 +1,9 @@
 (ns user
   (:require qx.core
-            qx.sample))
+            sample))
 
 (defn start []
-  (qx.core/start qx.sample/config))
+  (qx.core/start sample/config))
 
 (defn stop []
   (qx.core/stop))
