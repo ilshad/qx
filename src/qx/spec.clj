@@ -11,6 +11,7 @@
 
 (s/def :qx.executor/pool integer?)
 (s/def :qx.executor/policy #{:fifo :lifo})
+(s/def :qx.executor/fn fn?)
 
 (s/def :qx/topics (s/map-of keyword? :qx/topic))
 (s/def :qx/topic (s/keys :req [:qx.topic/executor]))
