@@ -8,3 +8,6 @@
         conn (d/connect uri)]
     (d/transact conn schema/schema)
     (assoc service ::conn conn)))
+
+(defn put [service entity]
+  (d/transact (::conn service) [entity]))

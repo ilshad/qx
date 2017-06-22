@@ -1,16 +1,15 @@
 (ns qx.task
-  (:require [datomic.api :as d]
-            [io.pedestal.log :as log]))
+  (:require [io.pedestal.log :as log]
+            [qx.db :as db]))
 
-(defn update-status [service task status]
-  (d/transact (:qx.db/conn service) [(assoc task :task/status status)]))
+(defn topic-dispatcher [service task] (:task/topic task))
 
-(defmulti handle-defer (fn [service task] (:task/topic task)))
+(defmulti handle-defer topic-dispatcher)
+(defmulti handle-queue topic-dispatcher)
 
 (defmethod handle-defer :default [service task]
-  (update-status service task :task.status/queue))
-
-(defmulti handle-queue (fn [service task] (:task/topic task)))
+  (db/put service (assoc task :task/status :task.status/queue)))
 
 (defmethod handle-queue :default [service task]
-  (log/info ::handle-queue task))
+  (throw (ex-info (str "Not found handle-queue for topic:" (:task/topic task))
+                  {:task task :service service})))

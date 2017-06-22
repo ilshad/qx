@@ -24,7 +24,7 @@
     (func)))
 
 (defn put [task]
-  (d/transact (::db/conn @service) [(assoc task :task/id (d/squuid))]))
+  (db/put @service (assoc task :task/id (d/squuid))))
 
 (defn put-defer [topic ^LocalDate date payload & args]
   (put (merge {:task/topic topic
